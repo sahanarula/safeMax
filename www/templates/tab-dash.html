@@ -1,0 +1,14 @@
+<ion-view view-title="Safemax">
+  <ion-content>
+    <div class="list list-inset" ng-hide="isPath || isAlert">
+      <ion-google-place placeholder="Enter start Location" info="start" id="startLocation" ng-model="DashCtrl.startLocation" />
+    </div>
+    <div class="list list-inset" ng-hide="isPath || isAlert">
+      <ion-google-place placeholder="Enter end Location" info="end" id="endLocation" ng-model="DashCtrl.endLocation" />
+    </div>
+    <iframe ng-class="isPath || isAlert ? 'iframe full-height' : 'iframe' " allowfullscreen src={{iframeMapUrl}} width="100%" height="100%" ng-if="isIframeMapVisible"></iframe>
+  </ion-content>
+  <ion-footer-bar>
+    <button class="button align-left" ng-click="sendPathToGuardian()" ng-disabled="!isIframeMapVisible"><i class="icon ion-ios-cloud-upload"></i></button>
+  </ion-footer-bar>
+</ion-view>

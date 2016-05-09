@@ -1,0 +1,30 @@
+<ion-view view-title="Login" name="login-view">
+  <ion-content class="padding">
+      <div class="list list-inset">
+          <ion-list>
+            <ion-radio name="type" ng-model="data.type" ng-value="'guardian'">Guardian</ion-radio>
+            <ion-radio name="type" ng-model="data.type" ng-value="'ward'">Ward</ion-radio>
+          </ion-list>
+          <label class="item item-input" style="margin-top: 32px;">
+              <input type="text" placeholder="Username" ng-model="data.username">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="data.password">
+          </label>
+          <label class="item item-input item-select" ng-if="isGuardian">
+            <div class="input-label">
+              Ward
+            </div>
+            <select ng-model="data.ward">
+              <option ng-repeat="ward in wards" ng-value="ward.id">{{ward.username}}</option>
+            </select>
+          </label>
+          <button class="button button-block button-calm" ng-click="login()">Login</button>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <a href="#/signup">Signup</a>
+        </div>
+      </div>
+  </ion-content>
+</ion-view>

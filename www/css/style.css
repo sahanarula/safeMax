@@ -1,0 +1,34 @@
+/* Empty. Add your own CSS if you like */
+input.ion-google-place[readonly] {
+    background-color: transparent;
+    cursor: text;
+    width: 100%;
+    padding-left: 16px;
+}
+
+.scroll {
+    height: 100%;
+}
+
+.list {
+    z-index: 99999
+}
+
+.iframe {
+    height: 80%;
+    width: 100%;
+    position: absolute;
+}
+
+.has-header {
+    top: 24px;
+}
+
+.view-container .list {
+    top: 16px;
+}
+
+.full-height {
+    height: 100% !important;
+    top: 20px;
+}
