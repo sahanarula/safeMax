@@ -20,7 +20,7 @@ getCurrentPositionName = function(scope, pos, callback) {
 
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $rootScope, $sce, $state) {
+.controller('DashCtrl', function($scope, $rootScope, $sce, $state, $ionicLoading) {
 
   $scope.geocoder = new google.maps.Geocoder();
 
@@ -52,6 +52,9 @@ angular.module('starter.controllers', [])
   })
 
   function sendDangerAlert() {
+    $ionicLoading.show({
+      template: 'Sending Alert Message'
+    })
     navigator.geolocation.getCurrentPosition(function(location) {
       getCurrentPositionName($scope, location.coords, function(location) {
         io.socket.put(`${BASE_URL}/user/${$rootScope.user.id}`, {
@@ -61,12 +64,16 @@ angular.module('starter.controllers', [])
           },
           location: location.address.formatted_address
         }, function(data) {
+          $ionicLoading.hide();
         })
       })
     })
   }
 
   function sendArrivalAlert () {
+    $ionicLoading.show({
+      template: 'Sending Arrival Message'
+    })
     navigator.geolocation.getCurrentPosition(function(location) {
       getCurrentPositionName($scope, location.coords, function(location) {
         io.socket.put(`${BASE_URL}/user/${$rootScope.user.id}`, {
@@ -76,6 +83,7 @@ angular.module('starter.controllers', [])
           },
           location: location.address.formatted_address
         }, function(data) {
+          $ionicLoading.hide();
         })
       })
     })
@@ -99,7 +107,13 @@ angular.module('starter.controllers', [])
   }
 
   $scope.sendPathToGuardian = function () {
-    io.socket.put(`${BASE_URL}/user/${$rootScope.user.id}`, {path: $scope.iframeMap}, function(data) {})
+    $ionicLoading.show({
+      template: 'Sending Path to Guardian'
+    })
+
+    io.socket.put(`${BASE_URL}/user/${$rootScope.user.id}`, {path: $scope.iframeMap}, function(data) {
+      $ionicLoading.hide();
+    })
   }
 
   $rootScope.$on('UPDATED_PLACE_LOCATION', function(state, data) {
@@ -137,7 +151,11 @@ angular.module('starter.controllers', [])
 
   $scope.login = function() {
     $rootScope.ward = $scope.data.ward ? $scope.data.ward : null;
+    $ionicLoading.show({
+      template: 'Logging in'
+    })
     io.socket.post(`${BASE_URL}/user/login`, $scope.data, function(data, headers) {
+      $ionicLoading.hide();
       if (headers.statusCode === 400) {
         return showNotification($ionicLoading, `Something Went Wrong<br>${data.message}`);
       }
@@ -174,7 +192,11 @@ angular.module('starter.controllers', [])
   })
 
   $scope.fetchWardCurrentLocation = function() {
+    $ionicLoading.show({
+      template: 'Fetching Ward Location'
+    })
     io.socket.get(`${BASE_URL}/fetchWardLocation?ward=${$rootScope.ward}`, function(data) {
+      $ionicLoading.hide();
       $scope.iframeMap = `https://www.google.com/maps/embed/v1/place?key=AIzaSyAWh8m-TvGaPtaMGcNSeh_H3YfWKOMyJP8%20&q=${data.location}`;
       $scope.iframeMapUrl = $sce.trustAsResourceUrl($scope.iframeMap);
       $scope.isIframeMapVisible = true;
